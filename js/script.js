@@ -40,15 +40,21 @@ function pauseMusic(){
 function nextMusic(){
     // here we'll just increment of index by 1
     musicIndex++;
+    // if musicIndex is greater than array length then musicIndex will be 1 so the first song will play
+    musicIndex > allMusic.length ? musicIndex = 1 : musicIndex = musicIndex;
     loadMusic(musicIndex);
     playMusic();
 }
 
 // prev music function 
 function prevMusic(){
-
+    // here we'll just decrement of index by 1
+    musicIndex--;
+    // if musicIndex is less than 1 then musicIndex will be array length so the last song will play
+    musicIndex < 1 ? musicIndex = allMusic.length : musicIndex = musicIndex;
+    loadMusic(musicIndex);
+    playMusic();
 }
-
 
 // play or music button event
 playPauseBtn.addEventListener('click', ()=>{
@@ -62,6 +68,7 @@ nextBtn.addEventListener("click", ()=>{
     nextMusic(); // calling next music function
 });
 
+// prev music btn event
 prevBtn.addEventListener("click", ()=>{
     prevMusic(); // calling prev music function
 });
