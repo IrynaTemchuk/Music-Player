@@ -6,7 +6,11 @@ mainAudio = wrapper.querySelector("#main-audio"),
 playPauseBtn = wrapper.querySelector(".play-pause"),
 prevBtn = wrapper.querySelector("#prev"),
 nextBtn = wrapper.querySelector("#next"),
-progressBar = wrapper.querySelector(".progress-bar");
+progressArea = wrapper.querySelector(".progress-area"),
+progressBar = wrapper.querySelector(".progress-bar"),
+musicList = wrapper.querySelector(".music-list"),
+showMoreBtn = wrapper.querySelector("#more-music"),
+hideMusicBtn = musicList.querySelector("#close");
 
 
 let musicIndex = 2;
@@ -96,7 +100,7 @@ mainAudio.addEventListener("timeupdate", (e)=>{
         }
         musicDuration.innerText = `${totalMin}:${totalSec}`;
     });
-    
+
     // update playing song current time
         let currentMin = Math.floor(currentTime / 60);
         let currentSec = Math.floor(currentTime % 60);
@@ -105,3 +109,89 @@ mainAudio.addEventListener("timeupdate", (e)=>{
         }
         musicCurrentTime.innerText = `${currentMin}:${currentSec}`;
 });
+
+// update playing song current time on according to the progress bar width
+progressArea.addEventListener("click", ()=>{
+    let progressWidthval = progressArea.clientWidth; //getting width of progress bar
+    let clickedOffSetX = e.offsetX; // getting offset x value
+    let songDuration = mainAudio.duration; // getting song total duration
+
+    mainAudio.currentTime = (clickedOffSetX / progressWidthval) * songDuration;
+    playMusic();
+});
+
+//work on repeat, shuffle song according to the icon
+const repeatBtn = wrapper.querySelector("#repeat-plist");
+repeatBtn.addEventListener("click", ()=>{
+    let getText = repeatBtn.innerText;
+    // do different changes on different icon click using switch
+    switch(getText){
+        case "repeat":
+            repeatBtn.innerText = "repeat_one";
+            repeatBtn.setAttribute("title", "Song looped");
+            break;
+        case "repeat_one":
+            repeatBtn.innerText = "shuffle";
+            repeatBtn.setAttribute("title", "Playback shuffle");
+            break;
+        case "shuffle":
+            repeatBtn.innerText = "repeat";
+            repeatBtn.setAttribute("title", "Playlist looped");
+            break;
+    }
+});
+
+// what will happend after the song ended
+
+mainAudio.addEventListener("ended", ()=>{
+    let getText = repeatBtn.innerText;
+    switch(getText){
+        case "repeat":
+            nextMusic();
+            break;
+        case "repeat_one":
+            mainAudio.currentTime = 0;
+            loadMusic(musicIndex);
+            playMusic();
+            break;
+        case "shuffle":
+            let randIndex = Math.floor((math.random() * allMusic.length) + 1);
+            do{
+                randIndex = Math.floor((math.random() * allMusic.length) + 1);
+            }while(musicIndex == randIndex);
+            musicIndex = randIndex; 
+            loadMusic(musicIndex);
+            playMusic();
+            break;
+    }
+});
+
+// work on Music List
+showMoreBtn.addEventListener("click", ()=>{
+    musicList.classList.toggle("show");
+});
+
+hideMusicBtn.addEventListener("click", ()=>{
+    showMoreBtn.click();
+});
+
+const ulTag = wrapper.querySelector("ul");
+
+for (let i = 0; i < allMusic.length; i++) {
+    let liTag = `<li>
+                    <div class="row">
+                        <span>${allMusic[i].name}</span>
+                        <p>${allMusic[i].artist}</p>
+                    </div>
+                    <audio class="${allMusic[i].src}" src="songs/${allMusic[i].src}.mp3"></audio>
+                    <span id="${allMusic[i].src}" class="audio-duration"></span>
+                </li>`;
+    ulTag.insertAdjacentHTML("beforeend", liTag);
+
+    let liAudioDuration = ulTag.querySelector(`#${allMusic[i].src}`);
+    let liAudioTag = ulTag.querySelector(`.${allMusic[i].src}`);
+
+    liAudioTag.addEventListener("loadeddata",()=>{
+        
+    });
+}
