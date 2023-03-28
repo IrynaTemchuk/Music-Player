@@ -13,7 +13,7 @@ showMoreBtn = wrapper.querySelector("#more-music"),
 hideMusicBtn = musicList.querySelector("#close");
 
 
-let musicIndex = Math.floor((math.random() * allMusic.length) + 1);
+let musicIndex = Math.floor((Math.random() * allMusic.length) + 1);
 isMusicPaused = true;
 
 window.addEventListener("load", ()=>{
@@ -159,9 +159,9 @@ mainAudio.addEventListener("ended", ()=>{
             playMusic();
             break;
         case "shuffle":
-            let randIndex = Math.floor((math.random() * allMusic.length) + 1);
+            let randIndex = Math.floor((Math.random() * allMusic.length) + 1);
             do{
-                randIndex = Math.floor((math.random() * allMusic.length) + 1);
+                randIndex = Math.floor((Math.random() * allMusic.length) + 1);
             }while(musicIndex == randIndex);
             musicIndex = randIndex; 
             loadMusic(musicIndex);
