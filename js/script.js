@@ -93,13 +93,12 @@ mainAudio.addEventListener("timeupdate", (e)=>{
 
     let musicCurrentTime = wrapper.querySelector(".current"),
     musicDuration = wrapper.querySelector(".duration");
-
     mainAudio.addEventListener("loadeddata", ()=>{
         // update song total duration
-        let audioDuration = mainAudio.duration;
-        let totalMin = Math.floor(audioDuration / 60);
-        let totalSec = Math.floor(audioDuration % 60);
-        if(totalSec < 10){ // adding 0 if sec is less than 10
+        let mainAdDuration = mainAudio.duration;
+        let totalMin = Math.floor(mainAdDuration / 60);
+        let totalSec = Math.floor(mainAdDuration % 60);
+        if(totalSec < 10){ //if sec is less than 10 then add 0 before it
             totalSec = `0${totalSec}`;
         }
         musicDuration.innerText = `${totalMin}:${totalSec}`;
@@ -129,7 +128,7 @@ progressArea.addEventListener("click", (e)=>{
 const repeatBtn = wrapper.querySelector("#repeat-plist");
 repeatBtn.addEventListener("click", ()=>{
     let getText = repeatBtn.innerText;
-    // do different changes on different icon click using switch
+    
     switch(getText){
         case "repeat":
             repeatBtn.innerText = "repeat_one";
@@ -194,33 +193,31 @@ for (let i = 0; i < allMusic.length; i++) {
                 </li>`;
     ulTag.insertAdjacentHTML("beforeend", liTag);
 
-    let liAudioDuration = ulTag.querySelector(`#${allMusic[i].src}`);
+    let liAudioDuartionTag = ulTag.querySelector(`#${allMusic[i].src}`);
     let liAudioTag = ulTag.querySelector(`.${allMusic[i].src}`);
-
-    liAudioTag.addEventListener("loadeddata",()=>{
-        let audioDuration = liAudioTag.duration;
-        let totalMin = Math.floor(audioDuration / 60);
-        let totalSec = Math.floor(audioDuration % 60);
-        if(totalSec < 10){ // adding 0 if sec is less than 10
-            totalSec = `0${totalSec}`;
-        }
-        liAudioDuration.innerText = `${totalMin}:${totalSec}`;
-        liAudioDuration.setAttribute("t-duration", `${totalMin}:${totalSec}`);
-    });
+  
+    liAudioTag.addEventListener("loadeddata", ()=>{
+        let duration = liAudioTag.duration;
+        let totalMin = Math.floor(duration / 60);
+        let totalSec = Math.floor(duration % 60);
+    if(totalSec < 10){ //if sec is less than 10 then add 0 before it
+        totalSec = `0${totalSec}`;
+    };
+    liAudioDuartionTag.innerText = `${totalMin}:${totalSec}`; //passing total duation of song
+    liAudioDuartionTag.setAttribute("t-duration", `${totalMin}:${totalSec}`); //adding t-duration attribute with total duration value
+  });
 }
 
-// work on play particular song on click
+// play particular song from the list onclick of li tag
 
 function playingNow(){
     const allLiTags = ulTag.querySelector("li");
 
     for (let j = 0; j < allLiTags.length; j++) {
-
         let audioTag = allLiTags[j].querySelector(".audio-duration");
 
         if(allLiTags[j].classList.contains("playing")){
             allLiTags[j].classList.remove("playing");
-
             let addDuration = audioTag.getAttribute("t-duration");
             audioTag.innerText = addDuration;
         }
