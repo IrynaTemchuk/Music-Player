@@ -211,7 +211,7 @@ for (let i = 0; i < allMusic.length; i++) {
 // play particular song from the list onclick of li tag
 
 function playingNow(){
-    const allLiTags = ulTag.querySelector("li");
+    const allLiTags = ulTag.querySelectorAll("li");
 
     for (let j = 0; j < allLiTags.length; j++) {
         let audioTag = allLiTags[j].querySelector(".audio-duration");
