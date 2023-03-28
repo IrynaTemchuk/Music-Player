@@ -40,7 +40,7 @@ function playMusic(){
 function pauseMusic(){
     wrapper.classList.remove("paused");
     playPauseBtn.querySelector("i").innerText = "play_arrow";
-    mainAudio.paused();
+    mainAudio.pause();
 }
 
 // next music function 
