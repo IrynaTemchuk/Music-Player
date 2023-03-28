@@ -29,4 +29,4 @@ let allMusic = [
         img: "music-5",
         src: "music-5",
     },
-]
+];

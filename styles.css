@@ -27,7 +27,6 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-
 }
 
 .wrapper {
@@ -44,7 +43,7 @@ body {
     cursor: pointer;
 }
 
-.top-bar, .progress-area .timer, .controls, .music-list .header, .music-list li {
+.top-bar, .progress-area .timer, .controls, .music-list .header, .music-list ul li {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -55,8 +54,13 @@ body {
     color: var(--lightblack);
 }
 
+.top-bar i:first-child {
+    margin-left: -7px;
+}
+
 .top-bar span {
     font-size: 18px;
+    margin-left: -3px;
     color: var(--lightblack);
 }
 
@@ -77,7 +81,6 @@ body {
 
 .song-details {
     text-align: center;
-    margin: 10px 0;
     margin: 30px 0;
     color: var(--lightblack)
 }
@@ -89,6 +92,7 @@ body {
 .song-details .artist {
     opacity: 0.9;
     font-size: 18px;
+    line-height: 35px;
 }
 
 .progress-area {
@@ -113,17 +117,19 @@ body {
     height: 12px;
     width: 12px;
     background: #000;
-    border-radius: inherit;
+    border-radius: 50%;
     top: 50%;
     right: -5px;
     transform: translateY(-50%);
     background: inherit;
     opacity: 0;
+    pointer-events: none;
     transition: opasity 0.2s ease;
 }
 
 .progress-area:hover .progress-bar::before{
     opacity: 1;
+    pointer-events: auto;
 }
 
 .progress-area .timer{
@@ -169,6 +175,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .play-pause::before {
@@ -205,6 +212,7 @@ body {
     background: var(--white);
     box-shadow: 0px -5px 10px rgba(0,0,0,0.1);
     transition: all 0.14s ease-out;
+    z-index: 5;
 }
 
 /* we'll use this show class in javascript */
@@ -252,6 +260,7 @@ body {
     margin-bottom: 5px;
     color: var(--lightblack);
     border-bottom: 1px solid #e5e5e5;
+    display: flex;
 }
 
 .music-list ul li:last-child {
