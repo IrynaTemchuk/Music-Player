@@ -14,6 +14,7 @@ hideMusicBtn = musicList.querySelector("#close");
 
 
 let musicIndex = Math.floor((math.random() * allMusic.length) + 1);
+isMusicPaused = true;
 
 window.addEventListener("load", ()=>{
     loadMusic(musicIndex); //calling load music function once window loaded
@@ -93,7 +94,6 @@ mainAudio.addEventListener("timeupdate", (e)=>{
     let musicCurrentTime = wrapper.querySelector(".current"),
     musicDuration = wrapper.querySelector(".duration");
 
-
     mainAudio.addEventListener("loadeddata", ()=>{
         // update song total duration
         let audioDuration = mainAudio.duration;
@@ -115,13 +115,14 @@ mainAudio.addEventListener("timeupdate", (e)=>{
 });
 
 // update playing song current time on according to the progress bar width
-progressArea.addEventListener("click", ()=>{
-    let progressWidthval = progressArea.clientWidth; //getting width of progress bar
+progressArea.addEventListener("click", (e)=>{
+    let progressWidth = progressArea.clientWidth; //getting width of progress bar
     let clickedOffSetX = e.offsetX; // getting offset x value
     let songDuration = mainAudio.duration; // getting song total duration
 
-    mainAudio.currentTime = (clickedOffSetX / progressWidthval) * songDuration;
+    mainAudio.currentTime = (clickedOffSetX / progressWidth) * songDuration;
     playMusic();
+    playingNow();
 });
 
 //work on repeat, shuffle song according to the icon
@@ -188,8 +189,8 @@ for (let i = 0; i < allMusic.length; i++) {
                         <span>${allMusic[i].name}</span>
                         <p>${allMusic[i].artist}</p>
                     </div>
-                    <audio class="${allMusic[i].src}" src="songs/${allMusic[i].src}.mp3"></audio>
                     <span id="${allMusic[i].src}" class="audio-duration"></span>
+                    <audio class="${allMusic[i].src}" src="songs/${allMusic[i].src}.mp3"></audio>
                 </li>`;
     ulTag.insertAdjacentHTML("beforeend", liTag);
 
@@ -209,8 +210,10 @@ for (let i = 0; i < allMusic.length; i++) {
 }
 
 // work on play particular song on click
-const allLiTags = ulTag.querySelector("li");
+
 function playingNow(){
+    const allLiTags = ulTag.querySelector("li");
+
     for (let j = 0; j < allLiTags.length; j++) {
 
         let audioTag = allLiTags[j].querySelector(".audio-duration");
