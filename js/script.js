@@ -13,10 +13,11 @@ showMoreBtn = wrapper.querySelector("#more-music"),
 hideMusicBtn = musicList.querySelector("#close");
 
 
-let musicIndex = 2;
+let musicIndex = Math.floor((math.random() * allMusic.length) + 1);
 
 window.addEventListener("load", ()=>{
     loadMusic(musicIndex); //calling load music function once window loaded
+    playingNow();
 })
 
 // load music function
@@ -49,6 +50,7 @@ function nextMusic(){
     musicIndex > allMusic.length ? musicIndex = 1 : musicIndex = musicIndex;
     loadMusic(musicIndex);
     playMusic();
+    playingNow();
 }
 
 // prev music function 
@@ -59,13 +61,15 @@ function prevMusic(){
     musicIndex < 1 ? musicIndex = allMusic.length : musicIndex = musicIndex;
     loadMusic(musicIndex);
     playMusic();
+    playingNow();
 }
 
 // play or music button event
-playPauseBtn.addEventListener('click', ()=>{
+playPauseBtn.addEventListener("click", ()=>{
     const isMusicPaused = wrapper.classList.contains("paused");
     // if isMusicPaused is true then call pauseMusic else call playMusic
     isMusicPaused ? pauseMusic() : playMusic();
+    playingNow();
 });
 
 // next music btn event
@@ -162,6 +166,7 @@ mainAudio.addEventListener("ended", ()=>{
             musicIndex = randIndex; 
             loadMusic(musicIndex);
             playMusic();
+            playingNow();
             break;
     }
 });
@@ -178,7 +183,7 @@ hideMusicBtn.addEventListener("click", ()=>{
 const ulTag = wrapper.querySelector("ul");
 
 for (let i = 0; i < allMusic.length; i++) {
-    let liTag = `<li>
+    let liTag = `<li li-index="${i + 1}">
                     <div class="row">
                         <span>${allMusic[i].name}</span>
                         <p>${allMusic[i].artist}</p>
@@ -192,6 +197,45 @@ for (let i = 0; i < allMusic.length; i++) {
     let liAudioTag = ulTag.querySelector(`.${allMusic[i].src}`);
 
     liAudioTag.addEventListener("loadeddata",()=>{
-        
+        let audioDuration = liAudioTag.duration;
+        let totalMin = Math.floor(audioDuration / 60);
+        let totalSec = Math.floor(audioDuration % 60);
+        if(totalSec < 10){ // adding 0 if sec is less than 10
+            totalSec = `0${totalSec}`;
+        }
+        liAudioDuration.innerText = `${totalMin}:${totalSec}`;
+        liAudioDuration.setAttribute("t-duration", `${totalMin}:${totalSec}`);
     });
+}
+
+// work on play particular song on click
+const allLiTags = ulTag.querySelector("li");
+function playingNow(){
+    for (let j = 0; j < allLiTags.length; j++) {
+
+        let audioTag = allLiTags[j].querySelector(".audio-duration");
+
+        if(allLiTags[j].classList.contains("playing")){
+            allLiTags[j].classList.remove("playing");
+
+            let addDuration = audioTag.getAttribute("t-duration");
+            audioTag.innerText = addDuration;
+        }
+
+        if(allLiTags[j].getAttribute("li-index") == musicIndex){
+            allLiTags[j].classList.add("playing");
+            audioTag.innerText = "Playing";
+        }
+    
+        // adding onclick attribute in all li tags
+        allLiTags[j].setAttribute("onclick", "clicked(this)");
+    }
+}
+
+function clicked(element){
+    let getLiIndex = element.getAttribute("li-index");
+    musicIndex = getLiIndex;
+    loadMusic(musicIndex);
+    playMusic();
+    playingNow();
 }
