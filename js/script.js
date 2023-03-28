@@ -193,7 +193,7 @@ for (let i = 0; i < allMusic.length; i++) {
                 </li>`;
     ulTag.insertAdjacentHTML("beforeend", liTag);
 
-    let liAudioDuartionTag = ulTag.querySelector(`#${allMusic[i].src}`);
+    let liAudioDurationTag = ulTag.querySelector(`#${allMusic[i].src}`);
     let liAudioTag = ulTag.querySelector(`.${allMusic[i].src}`);
   
     liAudioTag.addEventListener("loadeddata", ()=>{
@@ -203,8 +203,8 @@ for (let i = 0; i < allMusic.length; i++) {
     if(totalSec < 10){ //if sec is less than 10 then add 0 before it
         totalSec = `0${totalSec}`;
     };
-    liAudioDuartionTag.innerText = `${totalMin}:${totalSec}`; //passing total duation of song
-    liAudioDuartionTag.setAttribute("t-duration", `${totalMin}:${totalSec}`); //adding t-duration attribute with total duration value
+    liAudioDurationTag.innerText = `${totalMin}:${totalSec}`; //passing total duation of song
+    liAudioDurationTag.setAttribute("t-duration", `${totalMin}:${totalSec}`); //adding t-duration attribute with total duration value
   });
 }
 
