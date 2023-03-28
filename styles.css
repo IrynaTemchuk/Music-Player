@@ -280,6 +280,6 @@ ul li .audio-duration {
 }
 
 ul li .playing {
-    color: var(--violet);
     pointer-events: none;
+    color: var(--violet);
 }
